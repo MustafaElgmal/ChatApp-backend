@@ -24,7 +24,7 @@ router.post("/", async (req: Request, res: Response) => {
     });
     await user.save();
     const token = generateAuth(user.email);
-    res.status(201).json({ user, token });
+    res.status(201).json({token });
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }
@@ -32,6 +32,7 @@ router.post("/", async (req: Request, res: Response) => {
 
 router.post("/signin", async (req, res) => {
   const errors = await userLoginValidation(req.body);
+
   if (errors.length > 0) {
     return res.status(400).json({ messages: errors });
   }
@@ -41,7 +42,7 @@ router.post("/signin", async (req, res) => {
       where: { email: email.toLocaleLowerCase() },
     });
     const token = generateAuth(user?.email as string);
-    res.json({ user, token });
+    res.json({token});
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }

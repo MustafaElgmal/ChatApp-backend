@@ -53,10 +53,13 @@ export const userLoginValidation = async (user: {
   if (!user.password) {
     errors.push({ message: "Password is required!" });
   }
-  const vaild = bcrypt.compare(user.password, userFind?.password as string);
-  if (!vaild) {
-    errors.push({ message: "Password is wrong!" });
+  if (user.password && userFind) {
+    const vaild = await bcrypt.compare(user.password, userFind.password);
+    if (!vaild) {
+      errors.push({ message: "Password is wrong!" });
+    }
   }
+
   return errors;
 };
 

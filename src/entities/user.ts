@@ -1,4 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Conversation } from "./conversation";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from "typeorm";
+import { Message } from "./message";
 
 @Entity()
 export class User extends BaseEntity {
@@ -20,4 +30,11 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   dateOfBirth: Date;
 
+  @OneToMany(() => Message, (message) => message.user)
+  messages: Message[];
+
+  @ManyToMany(() => Conversation)
+  @JoinTable({name: "userConvs"})
+  conversations: Conversation[];
 }
+

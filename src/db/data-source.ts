@@ -1,7 +1,9 @@
+import { Conversation } from './../entities/conversation';
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { User } from "../entities/user"
 import { config } from "dotenv";
+import { Message } from "../entities/message";
 
 
 config()
@@ -15,7 +17,7 @@ export const AppDataSource = new DataSource({
     database: "postgres",
     synchronize: true,
     logging: false,
-    entities: [User],
+    entities: [User, Message, Conversation],
     migrations: [],
     subscribers: [],
 })
