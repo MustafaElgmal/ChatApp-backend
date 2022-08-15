@@ -51,14 +51,14 @@ router.get("/me", auth, async (req: RequestAuthType, res) => {
   res.json({ user: req.user });
 });
 
-router.delete('/me',auth,async(req:RequestAuthType,res)=>{
-    const user=req.user
-    try{
-        await User.delete({id:user?.id})
-        res.json({message:'User was Deleted!'})
-    }catch(e){
-        res.status(500).json({ error: "Server error!" });
-    }
-})
+router.delete("/me", auth, async (req: RequestAuthType, res) => {
+  const user = req.user;
+  try {
+    await User.delete({ id: user?.id });
+    res.json({ message: "User was Deleted!" });
+  } catch (e) {
+    res.status(500).json({ error: "Server error!" });
+  }
+});
 
 export default router;

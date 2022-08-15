@@ -23,6 +23,6 @@ export const auth = async (
     req.user = user;
     next();
   } catch (e) {
-     res.status(401).send({ error: "Please vaild Authenticate !" });
+    res.status(401).send({ error: "Please vaild Authenticate !" });
   }
 };
