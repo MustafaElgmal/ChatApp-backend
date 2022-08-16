@@ -33,8 +33,8 @@ export class User extends BaseEntity {
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
-  @ManyToMany(() => Conversation)
-  @JoinTable({name: "userConvs"})
+  @ManyToMany(() => Conversation,(conversation)=>conversation.users)
+  @JoinTable()
   conversations: Conversation[];
 }
 

@@ -7,6 +7,8 @@ import { urlencoded } from "express";
 import { config } from "dotenv";
 import { AppDataSource } from "./db/data-source";
 import userRouter from './routes/user'
+import messageRouter from './routes/message'
+import convRouter from './routes/conversation'
 
 const server = express();
 
@@ -17,6 +19,8 @@ server.use(helmet());
 server.use(json());
 server.use(urlencoded({ extended: false }));
 server.use('/users',userRouter)
+server.use('/messages',messageRouter)
+server.use('/conversations',convRouter)
 
 
 server.get('*',(req:Request,res:Response)=>{
