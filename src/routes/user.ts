@@ -48,6 +48,15 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.get('/',async(req,res)=>{
+  try{
+    const users=await User.find()
+    res.json({users})
+  }catch(e){
+    res.status(500).json({error:'Server error!'})
+  }
+})
+
 router.get("/me", auth, async (req: RequestAuthType, res) => {
   res.json({ user: req.user });
 });

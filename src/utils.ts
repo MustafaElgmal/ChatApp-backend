@@ -1,10 +1,10 @@
 import { User } from "./entities/user";
-import { UserType } from "./types";
+import { CreateUserType } from "./types";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-export const userValidation = async (user: UserType) => {
+export const userValidation = async (user: CreateUserType) => {
   const errors = [];
   if (!user.firstName) {
     errors.push({ message: "FirstName is required!" });
@@ -63,9 +63,34 @@ export const userLoginValidation = async (user: {
   return errors;
 };
 
+export const conversationVaildation = async (
+  title: string,
+  userIds: number[]
+) => {
+  let errors = [];
+
+  if (!title) {
+    errors.push({ message: "Title is required!" });
+  }
+  if (!userIds || userIds.length === 0) {
+    errors.push({ message: "MemberIds is required" });
+  }
+  return errors;
+};
+export const messageValidation = async (body: string, id: string) => {
+  const errors = [];
+  if (!body) {
+    errors.push({ message: "Body is required!" });
+  }
+  if (!id) {
+    errors.push({ message: "ConversationId is required as params!" });
+  }
+  return errors;
+};
+
 export const generateAuth = (email: string) => {
   const token = jwt.sign({ email }, process.env.SECRETKEY!, {
-    expiresIn: "1d",
+    expiresIn: '1d',
   });
   return token;
 };
