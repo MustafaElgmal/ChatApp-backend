@@ -29,12 +29,14 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   dateOfBirth: Date;
+  @Column()
+  ImgUrl:string
 
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
-  @ManyToMany(() => Conversation)
-  @JoinTable({name: "userConvs"})
+  @ManyToMany(() => Conversation,(conversation)=>conversation.users)
+  @JoinTable()
   conversations: Conversation[];
 }
 
