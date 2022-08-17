@@ -31,21 +31,7 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 router.post("/signin", async (req, res) => {
-  const errors = await userLoginValidation(req.body);
-
-  if (errors.length > 0) {
-    return res.status(400).json({ messages: errors });
-  }
-  try {
-    const { email } = req.body;
-    const user = await User.findOne({
-      where: { email: email.toLocaleLowerCase() },
-    });
-    const token = generateAuth(user?.email as string);
-    res.json({token});
-  } catch (e) {
-    res.status(500).json({ error: "Server error!" });
-  }
+ 
 });
 
 router.get("/me", auth, async (req: RequestAuthType, res) => {
