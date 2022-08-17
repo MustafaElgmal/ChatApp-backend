@@ -3,6 +3,7 @@ import { CreateUserType } from "./types";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { Message } from "./entities/message";
 
 export const userValidation = async (user: CreateUserType) => {
   const errors = [];
@@ -10,6 +11,9 @@ export const userValidation = async (user: CreateUserType) => {
     errors.push({ message: "FirstName is required!" });
   }
   if (!user.lastName) {
+    errors.push({ message: "LastName is required!" });
+  }
+  if (!user.ImgUrl) {
     errors.push({ message: "LastName is required!" });
   }
   if (!user.email) {
@@ -94,3 +98,16 @@ export const generateAuth = (email: string) => {
   });
   return token;
 };
+
+export const DivideMessagesIntoTwoCategory=(messages:Message[],id:number)=>{
+  let newMessage
+
+  const messagesType=messages.map((message)=>{
+    if(message.user.id===id){
+      return {...message,type:'create'}
+    }else{
+      return {...message,type:'replay'}
+    }
+  })
+  return  messagesType
+}

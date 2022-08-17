@@ -29,6 +29,8 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   dateOfBirth: Date;
+  @Column()
+  ImgUrl:string
 
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];

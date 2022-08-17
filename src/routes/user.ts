@@ -4,6 +4,7 @@ import { generateAuth, userLoginValidation, userValidation } from "./../utils";
 import { Request, Response, Router } from "express";
 import bcrypt from "bcrypt";
 import { auth } from "../middlewares/auth";
+import { In, Not } from "typeorm";
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.post("/", async (req: Request, res: Response) => {
     return res.status(400).json({ messages: errors });
   }
   try {
-    let { firstName, lastName, email, password } = req.body;
+    let { firstName, lastName, email, password,ImgUrl } = req.body;
     password = await bcrypt.hash(password, 8);
     email = email.toLocaleLowerCase();
     const user = User.create({
@@ -21,6 +22,7 @@ router.post("/", async (req: Request, res: Response) => {
       lastName,
       email,
       password,
+      ImgUrl
     });
     await user.save();
     const token = generateAuth(user.email);
@@ -48,9 +50,10 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.get('/',async(req,res)=>{
+router.get('/',auth,async(req:RequestAuthType,res)=>{
   try{
-    const users=await User.find()
+    const user=req.user!
+    const users=await User.find({where:{id:Not(user.id)}})
     res.json({users})
   }catch(e){
     res.status(500).json({error:'Server error!'})
