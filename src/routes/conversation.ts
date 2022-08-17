@@ -38,7 +38,7 @@ router.get("/", auth, async (req: RequestAuthType, res) => {
     const user = req.user!;
     const { conversations } = (await User.findOne({
       where: { id: user.id },
-      relations: { conversations: { users:{messages:true} } },
+      relations: { conversations: { users:true,messages:true } },
     }))!;
     res.json({ conversations });
   } catch (e) {

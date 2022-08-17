@@ -15,7 +15,8 @@ export interface CreateUserType{
   firstName:string,
   lastName:string,
   email:string,
-  password:string
+  password:string,
+  ImgUrl:string
 }
 
 export class MainEntityType extends BaseEntity{
@@ -25,5 +26,4 @@ export class MainEntityType extends BaseEntity{
   createdAt:Date
   @UpdateDateColumn({type:'timestamptz',onUpdate:'CURRENT_TIMESTAMP(6)'})
   updatedAt:Date
-
 }

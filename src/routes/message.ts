@@ -1,3 +1,4 @@
+import { DivideMessagesIntoTwoCategory } from "./../utils";
 import { Conversation } from "./../entities/conversation";
 import { Message } from "./../entities/message";
 import { RequestAuthType, RequestMessage } from "./../types";
@@ -25,7 +26,7 @@ router.post("/:id", auth, async (req: RequestAuthType, res) => {
       conversation,
     });
     await messgae.save();
-    res.status(201).json({ messgae});
+    res.status(201).json({ messgae });
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }
@@ -39,8 +40,13 @@ router.get("/:id", auth, async (req: RequestMessage, res) => {
       .json({ message: "ConversationId is required as params!" });
   }
   try {
-    const messages = await Message.find({ where: {conversation:{id: +id}},relations:{user:true} });
-    res.json({ messages });
+    const user = req.user!;
+    const messages = await Message.find({
+      where: { conversation: { id: +id } },
+      relations: { user: true },
+    });
+    const newmessages=DivideMessagesIntoTwoCategory(messages,user.id)
+    res.json({messages:newmessages});
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }
