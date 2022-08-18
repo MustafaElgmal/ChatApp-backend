@@ -9,24 +9,51 @@ import { AppDataSource } from "./db/data-source";
 import userRouter from './routes/user'
 import messageRouter from './routes/message'
 import convRouter from './routes/conversation'
+import { Server as SocketServer} from "socket.io";
+import http from 'http'
 
-const server = express();
+const app = express();
+
 
 config();
-server.use(cors());
-server.use(morgan("dev"));
-server.use(helmet());
-server.use(json());
-server.use(urlencoded({ extended: false }));
-server.use('/users',userRouter)
-server.use('/messages',messageRouter)
-server.use('/conversations',convRouter)
+app.use(cors());
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(json());
+app.use(urlencoded({ extended: false }));
+app.use('/users',userRouter)
+app.use('/messages',messageRouter)
+app.use('/conversations',convRouter)
 
 
-server.get('*',(req:Request,res:Response)=>{
+app.get('*',(req:Request,res:Response)=>{
   res.status(404).json({message:'Api not found!'})
 })
-server.listen(process.env.PORT, async () => {
+
+const httpServer=http.createServer(app)
+const socketServer=new SocketServer(httpServer,{
+  cors:{
+    origin:'http://localhost:3000',
+    methods:['GET','POST']
+  }
+})
+
+socketServer.on('connection',(socket)=>{
+  console.log(`user: ${socket.id} connected to database`)
+
+  socket.on('join_conversation',(conversation_id)=>{
+    console.log(`User ${socket.id} join to Room ${conversation_id}`)
+    socket.join(conversation_id)
+  })
+
+  socket.on('send_message',(message)=>{
+    socketServer.to((message.conversation.id).toString()).emit('recieve_message',{message,socketId:socket.id})
+  })
+
+})
+
+
+httpServer.listen(process.env.PORT, async () => {
   await AppDataSource.initialize();
   console.log(`listening on port ${process.env.PORT}`);
 });

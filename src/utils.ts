@@ -4,6 +4,7 @@ import validator from "validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Message } from "./entities/message";
+import { Conversation } from "./entities/conversation";
 
 export const userValidation = async (user: CreateUserType) => {
   const errors = [];
@@ -94,20 +95,48 @@ export const messageValidation = async (body: string, id: string) => {
 
 export const generateAuth = (email: string) => {
   const token = jwt.sign({ email }, process.env.SECRETKEY!, {
-    expiresIn: '1d',
+    expiresIn: "1d",
   });
   return token;
 };
 
-export const DivideMessagesIntoTwoCategory=(messages:Message[],id:number)=>{
-  let newMessage
+export const DivideMessagesIntoTwoCategory = (
+  messages: Message[],
+  id: number
+) => {
+  let newMessage;
 
-  const messagesType=messages.map((message)=>{
-    if(message.user.id===id){
-      return {...message,type:'create'}
-    }else{
-      return {...message,type:'replay'}
-    }
-  })
-  return  messagesType
-}
+  const messagesType = messages.map((message) => {
+    return message.user.id === id
+      ? { ...message, type: "create" }
+      : { ...message, type: "replay" };
+  });
+  return messagesType;
+};
+
+export const getConversationImg = (
+  conversations: Conversation[],
+  user: User
+) => {
+  const conversationsAfterAddImgeUrl = conversations.map((conversation) => {
+    return conversation.users.length > 2
+      ? {
+          ...conversation,
+          imgUrl:
+            "https://thumbs.dreamstime.com/z/group-chat-speech-bubbles-many-funny-smileys-fingers-49746406.jpg",
+          name: conversation.title,
+        }
+      : conversation.users[0].id === user.id
+      ? {
+          ...conversation,
+          ImgUrl: conversation.users[1].ImgUrl,
+          name: `${conversation.users[1].firstName} ${conversation.users[1].lastName}`,
+        }
+      : {
+          ...conversation,
+          ImgUrl: conversation.users[0].ImgUrl,
+          name: `${conversation.users[0].firstName} ${conversation.users[0].lastName}`,
+        };
+  });
+  return conversationsAfterAddImgeUrl;
+};
