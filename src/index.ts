@@ -13,8 +13,6 @@ import { Server as SocketServer} from "socket.io";
 import http from 'http'
 
 const app = express();
-
-
 config();
 app.use(cors());
 app.use(morgan("dev"));
@@ -41,6 +39,8 @@ const socketServer=new SocketServer(httpServer,{
 socketServer.on('connection',(socket)=>{
   console.log(`user: ${socket.id} connected to database`)
 
+
+
   socket.on('join_conversation',(conversation_id)=>{
     console.log(`User ${socket.id} join to Room ${conversation_id}`)
     socket.join(conversation_id)
@@ -48,6 +48,10 @@ socketServer.on('connection',(socket)=>{
 
   socket.on('send_message',(message)=>{
     socketServer.to((message.conversation.id).toString()).emit('recieve_message',{message,socketId:socket.id})
+  })
+
+  socket.on('disconnect',()=>{
+    console.log(`user: ${socket.id} connected to database`)
   })
 
 })

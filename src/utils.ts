@@ -46,6 +46,9 @@ export const userLoginValidation = async (user: {
   password: string;
 }) => {
   let errors = [];
+  if (!user.password) {
+    errors.push({ message: "Password is required!" });
+  }
   if (!user.email) {
     errors.push({ message: "Email is required!" });
   }
@@ -54,15 +57,12 @@ export const userLoginValidation = async (user: {
   });
   if (!userFind) {
     errors.push({ message: "Email is not vaild!" });
+    return errors
   }
-  if (!user.password) {
-    errors.push({ message: "Password is required!" });
-  }
-  if (user.password && userFind) {
-    const vaild = await bcrypt.compare(user.password, userFind.password);
-    if (!vaild) {
-      errors.push({ message: "Password is wrong!" });
-    }
+ 
+  const vaild = await bcrypt.compare(user.password, userFind.password);
+  if (!vaild) {
+    errors.push({ message: "Password is wrong!" });
   }
 
   return errors;
@@ -122,8 +122,8 @@ export const getConversationImg = (
     return conversation.users.length > 2
       ? {
           ...conversation,
-          imgUrl:
-            "https://thumbs.dreamstime.com/z/group-chat-speech-bubbles-many-funny-smileys-fingers-49746406.jpg",
+          ImgUrl:
+            "https://c8.alamy.com/comp/KN9E89/teamwork-a-group-of-icon-people-standing-in-a-circle-KN9E89.jpg",
           name: conversation.title,
         }
       : conversation.users[0].id === user.id
