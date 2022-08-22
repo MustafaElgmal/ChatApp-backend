@@ -20,13 +20,13 @@ router.post("/:id", auth, async (req: RequestAuthType, res) => {
     if (!conversation) {
       return res.status(404).json({ message: "Conversation is not found!" });
     }
-    const messgae = Message.create({
+    const message = Message.create({
       body,
       user: req.user,
       conversation,
     });
-    await messgae.save();
-    res.status(201).json({ messgae });
+    await message.save();
+    res.status(201).json({ message });
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }
@@ -43,7 +43,7 @@ router.get("/:id", auth, async (req: RequestMessage, res) => {
     const user = req.user!;
     const messages = await Message.find({
       where: { conversation: { id: +id } },
-      relations: { user: true },
+      relations: { user: true,conversation:true },
     });
     const newmessages=DivideMessagesIntoTwoCategory(messages,user.id)
     res.json({messages:newmessages});
