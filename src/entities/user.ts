@@ -29,6 +29,7 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   dateOfBirth: Date;
+
   @Column()
   ImgUrl:string
 
