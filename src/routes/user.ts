@@ -1,6 +1,6 @@
 import { RequestAuthType } from "./../types";
 import { User } from "../entities/user";
-import { generateAuth, userLoginValidation, userValidation } from "./../utils";
+import { generateAuth, generateExpire, userLoginValidation, userValidation } from "./../utils";
 import { Request, Response, Router } from "express";
 import bcrypt from "bcrypt";
 import { auth } from "../middlewares/auth";
@@ -26,7 +26,8 @@ router.post("/", async (req: Request, res: Response) => {
     });
     await user.save();
     const token = generateAuth(user.email);
-    res.status(201).json({ token });
+    const expire=generateExpire()
+    res.status(201).json({ token,expire });
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }
@@ -43,7 +44,9 @@ router.post("/signin", async (req, res) => {
       where: { email: email.toLocaleLowerCase() },
     });
     const token = generateAuth(user?.email as string);
-    res.json({ token });
+    const expire=generateExpire()
+    console.log((new Date(Date.now()).getTime()-new Date(expire*1000-7200000).getTime()))
+    res.status(201).json({ token,expire });
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }
@@ -52,7 +55,7 @@ router.post("/signin", async (req, res) => {
 router.get("/", auth, async (req: RequestAuthType, res) => {
   try {
     const user = req.user!;
-    const users = await User.find({ where: { id: Not(user.id) } });
+    const users = await User.find({ where: { id: Not(user.id) },select:['firstName','lastName','ImgUrl','id'] });
     res.json({ users });
   } catch (e) {
     res.status(500).json({ error: "Server error!" });

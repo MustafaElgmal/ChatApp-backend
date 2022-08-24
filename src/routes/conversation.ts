@@ -1,4 +1,4 @@
-import { conversationVaildation, getConversationImg } from "./../utils";
+import { conversationVaildation, getConversationImg, getConversationsImg } from "./../utils";
 import { User } from "./../entities/user";
 import { RequestAuthType } from "./../types";
 import { Conversation } from "./../entities/conversation";
@@ -26,12 +26,15 @@ router.post("/", auth, async (req: RequestAuthType, res) => {
       users,
     });
     await conversation.save();
-    res.status(201).json({ conversation });
+    const conversationAfterAddImgeUrl = getConversationImg(
+      conversation,
+      user
+    );
+    res.status(201).json({ conversation:conversationAfterAddImgeUrl});
   } catch (e) {
     res.status(500).json({ error: "Server error!" });
   }
 });
-
 router.get("/", auth, async (req: RequestAuthType, res) => {
   try {
     const user = req.user!;
@@ -39,7 +42,7 @@ router.get("/", auth, async (req: RequestAuthType, res) => {
       where: { id: user.id },
       relations: { conversations: { users: true, messages: true } },
     }))!;
-    const conversationsAfterAddImgeUrl = getConversationImg(
+    const conversationsAfterAddImgeUrl = getConversationsImg(
       conversations,
       user
     );
