@@ -11,6 +11,8 @@ import messageRouter from './routes/message'
 import convRouter from './routes/conversation'
 import { Server as SocketServer} from "socket.io";
 import http from 'http'
+import { Message } from "./entities/message";
+import { User } from "./entities/user";
 
 const app = express();
 config();
@@ -37,21 +39,18 @@ const socketServer=new SocketServer(httpServer,{
 })
 
 socketServer.on('connection',(socket)=>{
-  console.log(`user: ${socket.id} connected to database`)
-
-
+  console.log(`user: ${socket.id} connected`)
 
   socket.on('join_conversation',(conversation_id)=>{
     console.log(`User ${socket.id} join to Room ${conversation_id}`)
-    socket.join(conversation_id)
+    socket.join(conversation_id.toString())
   })
 
-  socket.on('send_message',(message)=>{
+  socket.on('send_message',(message:Message)=>{
     socketServer.to((message.conversation.id).toString()).emit('recieve_message',{message,socketId:socket.id})
   })
-
   socket.on('disconnect',()=>{
-    console.log(`user: ${socket.id} connected to database`)
+    console.log(`user: ${socket.id} disconnected to database`)
   })
 
 })
