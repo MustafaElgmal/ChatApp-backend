@@ -1,10 +1,11 @@
-import { conversationVaildation, getConversationImg, getConversationsImg } from "./../utils";
+import { conversationVaildation} from "../utils/validations";
 import { User } from "./../entities/user";
 import { RequestAuthType } from "./../types";
 import { Conversation } from "./../entities/conversation";
 import { Router } from "express";
 import { auth } from "../middlewares/auth";
 import { In } from "typeorm";
+import { getConversationImg, getConversationsImg } from "../utils/functions";
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import { MainEntityType } from './../types';
 
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, UpdateDateColumn, CreateDateColumn } from "typeorm";
+import { Entity, Column,ManyToOne} from "typeorm";
 import { Conversation } from "./conversation";
 import { User } from "./user";
 

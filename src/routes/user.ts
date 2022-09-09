@@ -1,10 +1,11 @@
 import { RequestAuthType } from "./../types";
 import { User } from "../entities/user";
-import { generateAuth, generateExpire, userLoginValidation, userValidation } from "./../utils";
+import { generateAuth, userLoginValidation, userValidation } from "../utils/validations";
 import { Request, Response, Router } from "express";
 import bcrypt from "bcrypt";
 import { auth } from "../middlewares/auth";
 import { In, Not } from "typeorm";
+import { generateExpire } from "../utils/functions";
 
 const router = Router();
 

@@ -1,10 +1,11 @@
-import { DivideMessagesIntoTwoCategory } from "./../utils";
+
 import { Conversation } from "./../entities/conversation";
 import { Message } from "./../entities/message";
-import { RequestAuthType, RequestMessage } from "./../types";
+import { RequestAuthType } from "./../types";
 import { Router } from "express";
 import { auth } from "../middlewares/auth";
-import { messageValidation } from "../utils";
+import { messageValidation } from "../utils/validations";
+import { DivideMessagesIntoTwoCategory } from "../utils/functions";
 const router = Router();
 
 router.post("/:id", auth, async (req: RequestAuthType, res) => {
@@ -32,7 +33,7 @@ router.post("/:id", auth, async (req: RequestAuthType, res) => {
   }
 });
 
-router.get("/:id", auth, async (req: RequestMessage, res) => {
+router.get("/:id", auth, async (req:RequestAuthType, res) => {
   const { id } = req.params;
   if (!id) {
     return res

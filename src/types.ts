@@ -6,11 +6,6 @@ export interface RequestAuthType extends Request {
   user?: User;
 }
 
-export interface RequestMessage extends Request{
-  user?:User,
-  conversation?:Conversation
-}
-
 export interface CreateUserType{
   firstName:string,
   lastName:string,

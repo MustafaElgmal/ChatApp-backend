@@ -1,9 +1,7 @@
 import { MainEntityType } from './../types';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
-  BaseEntity,
   OneToMany,
   ManyToMany,
 } from "typeorm";

@@ -12,6 +12,7 @@ import convRouter from './routes/conversation'
 import { Server as SocketServer} from "socket.io";
 import http from 'http'
 import { Message } from "./entities/message";
+import { User } from "./entities/user";
 
 const app = express();
 config();
@@ -48,13 +49,9 @@ socketServer.on('connection',(socket)=>{
   socket.on('send_message',(message:Message)=>{
     socketServer.to((message.conversation.id).toString()).emit('recieve_message',{message,socketId:socket.id})
   })
-
-
-
-
-  // socket.on('disconnect',()=>{
-  //   console.log(`user: ${socket.id} connected to database`)
-  // })
+  socket.on('disconnect',()=>{
+    console.log(`user: ${socket.id} disconnected to database`)
+  })
 
 })
 
