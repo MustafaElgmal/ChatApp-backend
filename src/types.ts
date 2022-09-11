@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, CreateDateColumn,PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './entities/user';
 import { Request } from "express";
 import { Conversation } from './entities/conversation';
@@ -20,6 +20,6 @@ export class MainEntityType extends BaseEntity{
   id:number
   @CreateDateColumn({type:'timestamptz'})
   createdAt:Date
-  @UpdateDateColumn({type:'timestamptz',onUpdate:'CURRENT_TIMESTAMP(6)'})
+  @CreateDateColumn({type:'timestamptz',onUpdate:'CURRENT_TIMESTAMP(6)'})
   updatedAt:Date
 }
