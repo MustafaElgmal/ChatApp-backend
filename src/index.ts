@@ -12,7 +12,6 @@ import convRouter from './routes/conversation'
 import { Server as SocketServer} from "socket.io";
 import http from 'http'
 import { Message } from "./entities/message";
-import { User } from "./entities/user";
 
 const app = express();
 config();
