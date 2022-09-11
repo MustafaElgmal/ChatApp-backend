@@ -14,6 +14,7 @@ export interface CreateUserType{
   ImgUrl:string
 }
 
+
 export class MainEntityType extends BaseEntity{
   @PrimaryGeneratedColumn()
   id:number
