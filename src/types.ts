@@ -1,7 +1,6 @@
 import { BaseEntity, CreateDateColumn,PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './entities/user';
 import { Request } from "express";
-import { Conversation } from './entities/conversation';
 export interface RequestAuthType extends Request {
   user?: User;
 }
