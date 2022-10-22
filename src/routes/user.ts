@@ -77,4 +77,5 @@ router.delete("/me", auth, async (req: RequestAuthType, res) => {
   }
 });
 
+
 export default router;
