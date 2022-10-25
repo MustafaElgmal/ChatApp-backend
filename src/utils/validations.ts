@@ -12,29 +12,29 @@ export const userValidation = async (user: CreateUserType) => {
   if (!user.lastName) {
     errors.push({ message: "LastName is required!" });
   }
-  if (!user.ImgUrl) {
-    errors.push({ message: "LastName is required!" });
-  }
   if (!user.email) {
     errors.push({ message: "Email is required!" });
+  } else {
+    if (!validator.isEmail(user.email)) {
+      errors.push({ message: "Email is not vaild!" });
+    }
+    const emailFind = await User.findOne({
+      where: { email: user.email.toLocaleLowerCase() },
+    });
+    if (emailFind) {
+      errors.push({ message: "Email is already exists!" });
+    }
   }
-  if (!validator.isEmail(user.email)) {
-    errors.push({ message: "Email is not vaild!" });
-  }
-  const emailFind = await User.findOne({
-    where: { email: user.email.toLocaleLowerCase() },
-  });
-  if (emailFind) {
-    errors.push({ message: "Email is already exists!" });
-  }
+
   if (!user.password) {
     errors.push({ message: "Password is required!" });
-  }
-  if (!validator.isStrongPassword(user.password)) {
-    errors.push({
-      message:
-        "Password should be {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1}!",
-    });
+  } else {
+    if (!validator.isStrongPassword(user.password)) {
+      errors.push({
+        message:
+          "Password should be {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1}!",
+      });
+    }
   }
 
   return errors;
@@ -97,3 +97,5 @@ export const generateAuth = (email: string) => {
   });
   return token;
 };
+
+

@@ -30,7 +30,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   dateOfBirth: Date;
 
-  @Column()
+  @Column({ nullable: true })
   ImgUrl:string
 
   @OneToMany(() => Message, (message) => message.user)

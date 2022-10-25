@@ -3,14 +3,14 @@ import { User } from './entities/user';
 import { Request } from "express";
 export interface RequestAuthType extends Request {
   user?: User;
+  file?:any
 }
 
 export interface CreateUserType{
   firstName:string,
   lastName:string,
   email:string,
-  password:string,
-  ImgUrl:string
+  password:string
 }
 
 

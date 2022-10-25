@@ -32,7 +32,7 @@ app.get('*',(req:Request,res:Response)=>{
 const httpServer=http.createServer(app)
 const socketServer=new SocketServer(httpServer,{
   cors:{
-    origin:'http://localhost:3000',
+    origin:['http://localhost:3000','https://chat-app-frontend-ruby.vercel.app'],
     methods:['GET','POST']
   }
 })
